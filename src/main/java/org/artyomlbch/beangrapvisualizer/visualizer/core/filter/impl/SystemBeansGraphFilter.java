@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.analyzer.impl;
+package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.analyzer.BeansGraphAnalyzer;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanEdge;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanNode;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class SystemBeansGraphAnalyzer implements BeansGraphAnalyzer {
+public class SystemBeansGraphFilter implements BeansGraphFilter {
 
     @Override
     public BeanGraph analyze(BeanGraph originalGraph) {
