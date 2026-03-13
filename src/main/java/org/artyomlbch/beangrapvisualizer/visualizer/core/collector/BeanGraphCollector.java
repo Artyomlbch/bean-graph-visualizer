@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 @Component
 public class BeanGraphCollector implements ApplicationListener<ContextRefreshedEvent> {
@@ -36,19 +38,24 @@ public class BeanGraphCollector implements ApplicationListener<ContextRefreshedE
 
         for (String beanName : beanNames) {
             BeanNode node = createNode(beanName, factory);
-            graph.addNode(node);
 
             String[] dependencies = factory.getDependenciesForBean(beanName);
-            for (String depName : dependencies) {
-                if (beanName.equals(depName)) continue;
+            if (dependencies.length == 0) {
+                graph.addSoloNode(node);
+            } else {
+                graph.addNode(node);
 
-                InjectionType type = determineInjectionType(beanName, depName, factory);
+                for (String depName : dependencies) {
+                    if (beanName.equals(depName)) continue;
 
-                graph.addEdge(new BeanEdge(
-                        createNode(beanName, factory),
-                        createNode(depName, factory),
-                        type)
-                );
+                    InjectionType type = determineInjectionType(beanName, depName, factory);
+
+                    graph.addEdge(new BeanEdge(
+                            createNode(beanName, factory),
+                            createNode(depName, factory),
+                            type)
+                    );
+                }
             }
         }
         return graph;
@@ -78,8 +85,8 @@ public class BeanGraphCollector implements ApplicationListener<ContextRefreshedE
     }
 
     private InjectionType determineInjectionType(String beanName, String depName, ConfigurableListableBeanFactory factory) {
-        Class<?> beanClass = null;
-        Class<?> depClass = null;
+        Class<?> beanClass;
+        Class<?> depClass;
         try {
             beanClass = factory.getType(beanName);
             depClass = factory.getType(depName);
@@ -90,9 +97,19 @@ public class BeanGraphCollector implements ApplicationListener<ContextRefreshedE
         if (beanClass == null || depClass == null) return InjectionType.UNKNOWN;
 
         for (Constructor<?> constructor : beanClass.getConstructors()) {
-            for (Class<?> paramType : constructor.getParameterTypes()) {
-                if (paramType.isAssignableFrom(depClass)) {
+            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
+
+            for (Type paramType : genericParameterTypes) {
+                if (paramType instanceof Class<?> && ((Class<?>) paramType).isAssignableFrom(depClass)) {
                     return InjectionType.CONSTRUCTOR;
+                }
+
+                if (paramType instanceof ParameterizedType parameterizedType) {
+                    for (Type arg :  parameterizedType.getActualTypeArguments()) {
+                        if (arg instanceof Class<?> && ((Class<?>) arg).isAssignableFrom(depClass)) {
+                            return InjectionType.CONSTRUCTOR;
+                        }
+                    }
                 }
             }
         }
