@@ -1,7 +1,9 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.api;
 
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.criteria.GraphFilterCriteria;
 import org.artyomlbch.beangrapvisualizer.visualizer.core.serializer.GraphSerializer;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphElementType;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
 import org.artyomlbch.beangrapvisualizer.visualizer.service.BeanGraphService;
 import org.artyomlbch.beangrapvisualizer.visualizer.service.SerializerService;
@@ -24,10 +26,15 @@ public class GraphController {
     @GetMapping(value = "/api/ioc-visualizer/graph", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getGraph(
             @RequestParam(defaultValue = "json") String format,
-            @RequestParam(defaultValue = "ALL") GraphType type
+            @RequestParam(defaultValue = "ALL") GraphType type,
+            @RequestParam(required = false) String packageName,
+            @RequestParam(defaultValue = "ALL") GraphElementType elements
     ) {
-        BeanGraph graph = beanGraphService.getBeanGraph(type);
+        GraphFilterCriteria criteria = new GraphFilterCriteria(type, packageName, elements);
+
+        BeanGraph graph = beanGraphService.getGraph(criteria);
         GraphSerializer serializer = serializerService.getGraphSerializer(format);
+
         return serializer.serialize(graph);
     }
 }

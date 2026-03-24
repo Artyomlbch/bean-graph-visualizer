@@ -1,9 +1,9 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.filter;
 
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.criteria.GraphFilterCriteria;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
 
 public interface BeansGraphFilter {
-    BeanGraph analyze(BeanGraph beanGraph);
-    GraphType getGraphType();
+    boolean isApplicable(GraphFilterCriteria criteria);
+    BeanGraph apply(BeanGraph originalGraph, GraphFilterCriteria criteria);
 }

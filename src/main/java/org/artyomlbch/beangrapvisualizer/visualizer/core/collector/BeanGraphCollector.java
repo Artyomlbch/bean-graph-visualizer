@@ -1,5 +1,6 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.collector;
 
+import org.artyomlbch.beangrapvisualizer.visualizer.core.provider.BeanGraphProvider;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -16,17 +17,17 @@ import java.lang.reflect.Type;
 @Component
 public class BeanGraphCollector implements ApplicationListener<ContextRefreshedEvent> {
 
-    private BeanGraph cachedGraph;
+    private final BeanGraphProvider provider;
+
+    public BeanGraphCollector(BeanGraphProvider provider) {
+        this.provider = provider;
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (event.getApplicationContext().getParent() == null && cachedGraph == null) {
-            cachedGraph = buildGraph(event.getApplicationContext());
+        if (event.getApplicationContext().getParent() == null) {
+            provider.save(buildGraph(event.getApplicationContext()));
         }
-    }
-
-    public BeanGraph getGraph() {
-        return cachedGraph;
     }
 
     private BeanGraph buildGraph(ApplicationContext applicationContext) {
@@ -69,19 +70,46 @@ public class BeanGraphCollector implements ApplicationListener<ContextRefreshedE
         }
 
         String className = (beanClass != null) ? beanClass.getName() : "Unknown";
-        String label = (beanClass != null) ? beanClass.getSimpleName() : beanName;
-        boolean isSystem = className.startsWith("org.springframework"); // доделать, тут сейчас только бины спринга
 
         BeanScope scope = BeanScope.UNKNOWN;
+        int role = BeanDefinition.ROLE_APPLICATION;
+
         try {
             BeanDefinition bd = factory.getBeanDefinition(beanName);
+            role = bd.getRole();
+
             if (bd.isSingleton()) scope = BeanScope.SINGLETON;
             else if (bd.isPrototype()) scope = BeanScope.PROTOTYPE;
         } catch (Exception e) {
             scope = BeanScope.SINGLETON;
         }
 
-        return new BeanNode(beanName, label, className, scope, isSystem);
+        boolean isSystem = isSystemBean(className, role);
+        return new BeanNode(beanName, className, scope, isSystem);
+    }
+
+    private boolean isSystemBean(String className, int role) {
+        if (className == null || className.equals("Unknown")) {
+            return true;
+        }
+
+        if (role == BeanDefinition.ROLE_INFRASTRUCTURE || role == BeanDefinition.ROLE_SUPPORT) {
+            return true;
+        }
+
+        return className.startsWith("org.springframework") ||
+                className.startsWith("java.") ||
+                className.startsWith("javax.") ||
+                className.startsWith("jakarta.") ||
+                className.startsWith("com.fasterxml.jackson") ||
+                className.startsWith("ch.qos.logback") ||
+                className.startsWith("org.slf4j") ||
+                className.startsWith("org.apache.tomcat") ||
+                className.startsWith("org.apache.catalina") ||
+                className.startsWith("org.hibernate") ||
+                className.startsWith("com.zaxxer.hikari") ||
+                className.startsWith("sun.") ||
+                className.startsWith("jdk.");
     }
 
     private InjectionType determineInjectionType(String beanName, String depName, ConfigurableListableBeanFactory factory) {
