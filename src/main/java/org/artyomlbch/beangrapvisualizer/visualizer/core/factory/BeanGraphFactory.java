@@ -1,36 +1,24 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.collector;
+package org.artyomlbch.beangrapvisualizer.visualizer.core.factory;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.provider.BeanGraphProvider;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-@Component
-public class BeanGraphCollector implements ApplicationListener<ContextRefreshedEvent> {
+public class BeanGraphFactory {
 
-    private final BeanGraphProvider provider;
+    private final ApplicationContext applicationContext;
 
-    public BeanGraphCollector(BeanGraphProvider provider) {
-        this.provider = provider;
+    public BeanGraphFactory(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (event.getApplicationContext().getParent() == null) {
-            provider.save(buildGraph(event.getApplicationContext()));
-        }
-    }
-
-    private BeanGraph buildGraph(ApplicationContext applicationContext) {
+    public BeanGraph newInstance() {
         BeanGraph graph = new BeanGraph();
         ConfigurableListableBeanFactory factory =
                 (ConfigurableListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
@@ -150,4 +138,5 @@ public class BeanGraphCollector implements ApplicationListener<ContextRefreshedE
 
         return InjectionType.UNKNOWN;
     }
+
 }

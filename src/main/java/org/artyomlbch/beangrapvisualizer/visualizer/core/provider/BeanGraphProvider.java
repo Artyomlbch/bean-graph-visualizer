@@ -1,20 +1,24 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.provider;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.cache.BeanGraphCache;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.factory.BeanGraphFactory;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BeanGraphProvider {
-    private BeanGraph cachedGraph;
+public class BeanGraphProvider implements ApplicationListener<ContextRefreshedEvent> {
 
-    public void save(BeanGraph graph) {
-        this.cachedGraph = graph;
+    private final BeanGraphCache graphCache;
+
+    public BeanGraphProvider(BeanGraphCache graphCache) {
+        this.graphCache = graphCache;
     }
 
-    public BeanGraph get() {
-        if (cachedGraph == null) {
-            throw new IllegalStateException("Graph is not initialized yet.");
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (event.getApplicationContext().getParent() == null) {
+            graphCache.put(new BeanGraphFactory(event.getApplicationContext()).newInstance());
         }
-        return cachedGraph;
     }
 }

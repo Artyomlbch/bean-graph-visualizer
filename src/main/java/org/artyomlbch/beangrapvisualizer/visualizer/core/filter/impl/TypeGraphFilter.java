@@ -11,17 +11,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class TypeGraphFilter implements BeansGraphFilter {
-    @Override
-    public boolean isApplicable(GraphFilterCriteria criteria) {
-        return criteria.graphType() != null && criteria.graphType() != GraphType.ALL;
+
+    private final GraphType graphType;
+
+    public TypeGraphFilter(GraphType graphType) {
+        this.graphType = graphType;
     }
 
     @Override
-    public BeanGraph apply(BeanGraph originalGraph, GraphFilterCriteria criteria) {
+    public BeanGraph apply(BeanGraph originalGraph) {
         BeanGraph filteredGraph = new BeanGraph();
-        boolean filterSystem = (criteria.graphType() == GraphType.SYSTEM);
+        boolean filterSystem = graphType == GraphType.SYSTEM;
 
         List<BeanNode> filteredNodes = originalGraph.getNodes().stream()
                 .filter(node -> node.isSystem() == filterSystem)

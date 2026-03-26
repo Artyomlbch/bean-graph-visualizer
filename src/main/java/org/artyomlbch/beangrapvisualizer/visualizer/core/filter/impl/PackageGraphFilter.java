@@ -9,21 +9,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class PackageGraphFilter implements BeansGraphFilter {
 
-    @Override
-    public boolean isApplicable(GraphFilterCriteria criteria) {
-        return criteria.packageName() != null && !criteria.packageName().isBlank();
+    private final String packageName;
+
+    public PackageGraphFilter(String packageName) {
+        this.packageName = packageName;
     }
 
     @Override
-    public BeanGraph apply(BeanGraph originalGraph, GraphFilterCriteria criteria) {
+    public BeanGraph apply(BeanGraph originalGraph) {
         BeanGraph filteredGraph = new BeanGraph();
-        String pkg = criteria.packageName();
 
         List<BeanNode> filteredNodes = originalGraph.getNodes().stream()
-                .filter(node -> node.getFullClassName().startsWith(pkg))
+                .filter(node -> node.getFullClassName().startsWith(packageName))
                 .toList();
 
         filteredNodes.forEach(filteredGraph::addNode);
