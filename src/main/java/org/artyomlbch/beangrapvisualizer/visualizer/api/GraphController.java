@@ -1,10 +1,7 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.api;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.criteria.GraphFilterCriteria;
 import org.artyomlbch.beangrapvisualizer.visualizer.core.serializer.GraphSerializer;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphElementType;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.filter.GraphRequestDto;
 import org.artyomlbch.beangrapvisualizer.visualizer.service.BeanGraphService;
 import org.artyomlbch.beangrapvisualizer.visualizer.service.SerializerService;
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 @RestController
 public class GraphController {
