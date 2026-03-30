@@ -23,17 +23,17 @@ public class FilterPipelineFactory {
         }
 
         for (FilterDto  dto : requestDto.getFilters()) {
-            if (dto.getValue() == null || dto.getValue().isBlank()) continue;
+            if (dto.value() == null || dto.value().isBlank()) continue;
 
             try {
-                switch (dto.getType()) {
-                    case PACKAGE -> filters.add(new PackageGraphFilter(dto.getValue()));
-                    case TYPE -> filters.add(new TypeGraphFilter(GraphType.valueOf(dto.getValue())));
-                    case ELEMENTS -> filters.add(new ElementsGraphFilter(GraphElementType.valueOf(dto.getValue())));
+                switch (dto.type()) {
+                    case PACKAGE -> filters.add(new PackageGraphFilter(dto.value()));
+                    case TYPE -> filters.add(new TypeGraphFilter(GraphType.valueOf(dto.value())));
+                    case ELEMENTS -> filters.add(new ElementsGraphFilter(GraphElementType.valueOf(dto.value())));
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        "Wrong value '" + dto.getValue() + "' for filter " + dto.getType()
+                        "Wrong value '" + dto.value() + "' for filter " + dto.type()
                 );
             }
         }

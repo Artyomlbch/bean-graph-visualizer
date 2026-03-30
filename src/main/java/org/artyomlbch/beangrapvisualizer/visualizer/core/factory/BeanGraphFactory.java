@@ -1,34 +1,35 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.factory;
 
+import org.artyomlbch.beangrapvisualizer.visualizer.core.repository.BeanMetadataRepository;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+@Component
 public class BeanGraphFactory {
 
-    private final ApplicationContext applicationContext;
+    private final BeanMetadataRepository beanRepository;
 
-    public BeanGraphFactory(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public BeanGraphFactory(BeanMetadataRepository beanRepository) {
+        this.beanRepository = beanRepository;
     }
 
     public BeanGraph newInstance() {
         BeanGraph graph = new BeanGraph();
-        ConfigurableListableBeanFactory factory =
-                (ConfigurableListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
 
-        String[] beanNames = factory.getBeanDefinitionNames();
+        String[] beanNames = beanRepository.getBeanDefinitionNames();
 
         for (String beanName : beanNames) {
-            BeanNode node = createNode(beanName, factory);
+            BeanNode node = createNode(beanName, beanRepository);
 
-            String[] dependencies = factory.getDependenciesForBean(beanName);
+            String[] dependencies = beanRepository.getDependenciesForBean(beanName);
             if (dependencies.length == 0) {
                 graph.addSoloNode(node);
             } else {
@@ -37,11 +38,11 @@ public class BeanGraphFactory {
                 for (String depName : dependencies) {
                     if (beanName.equals(depName)) continue;
 
-                    InjectionType type = determineInjectionType(beanName, depName, factory);
+                    InjectionType type = determineInjectionType(beanName, depName, beanRepository);
 
                     graph.addEdge(new BeanEdge(
-                            createNode(beanName, factory),
-                            createNode(depName, factory),
+                            createNode(beanName, beanRepository),
+                            createNode(depName, beanRepository),
                             type)
                     );
                 }
@@ -50,10 +51,10 @@ public class BeanGraphFactory {
         return graph;
     }
 
-    private BeanNode createNode(String beanName, ConfigurableListableBeanFactory factory) {
+    private BeanNode createNode(String beanName, BeanMetadataRepository beanRepository) {
         Class<?> beanClass = null;
         try {
-            beanClass = factory.getType(beanName);
+            beanClass = beanRepository.getBeanClass(beanName);
         } catch (Exception _) {
         }
 
@@ -63,7 +64,7 @@ public class BeanGraphFactory {
         int role = BeanDefinition.ROLE_APPLICATION;
 
         try {
-            BeanDefinition bd = factory.getBeanDefinition(beanName);
+            BeanDefinition bd = beanRepository.getBeanDefinition(beanName);
             role = bd.getRole();
 
             if (bd.isSingleton()) scope = BeanScope.SINGLETON;
@@ -100,12 +101,12 @@ public class BeanGraphFactory {
                 className.startsWith("jdk.");
     }
 
-    private InjectionType determineInjectionType(String beanName, String depName, ConfigurableListableBeanFactory factory) {
+    private InjectionType determineInjectionType(String beanName, String depName, BeanMetadataRepository beanRepository) {
         Class<?> beanClass;
         Class<?> depClass;
         try {
-            beanClass = factory.getType(beanName);
-            depClass = factory.getType(depName);
+            beanClass = beanRepository.getBeanClass(beanName);
+            depClass = beanRepository.getBeanClass(depName);
         } catch (Exception e) {
             return InjectionType.UNKNOWN;
         }

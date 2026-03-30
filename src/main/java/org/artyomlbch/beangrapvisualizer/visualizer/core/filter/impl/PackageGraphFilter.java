@@ -1,9 +1,7 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
 
 import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.criteria.GraphFilterCriteria;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.*;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
