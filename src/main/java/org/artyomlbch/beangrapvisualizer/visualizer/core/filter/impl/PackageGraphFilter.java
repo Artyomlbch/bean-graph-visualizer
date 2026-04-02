@@ -1,13 +1,13 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.*;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PackageGraphFilter implements BeansGraphFilter {
+public class PackageGraphFilter implements BeanGraphFilter {
 
     private final String packageName;
 

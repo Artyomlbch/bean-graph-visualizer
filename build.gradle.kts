@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.annotationProcessor
+
 plugins {
     java
     id("org.springframework.boot") version "4.0.3"
@@ -22,6 +24,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("org.projectlombok:lombok")
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    
+    annotationProcessor("org.projectlombok:lombok")
+
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

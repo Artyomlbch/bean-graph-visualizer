@@ -1,6 +1,6 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanNode;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TypeGraphFilter implements BeansGraphFilter {
+public class TypeGraphFilter implements BeanGraphFilter {
 
     private final GraphType graphType;
 

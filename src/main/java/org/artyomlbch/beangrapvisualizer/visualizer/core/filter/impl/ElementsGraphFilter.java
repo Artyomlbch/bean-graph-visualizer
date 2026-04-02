@@ -1,10 +1,10 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphElementType;
 
-public class ElementsGraphFilter implements BeansGraphFilter {
+public class ElementsGraphFilter implements BeanGraphFilter {
 
     private final GraphElementType elementType;
 

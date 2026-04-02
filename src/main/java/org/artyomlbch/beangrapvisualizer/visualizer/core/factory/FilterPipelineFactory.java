@@ -1,6 +1,6 @@
 package org.artyomlbch.beangrapvisualizer.visualizer.core.factory;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeansGraphFilter;
+import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.ElementsGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.PackageGraphFilter;
 import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.TypeGraphFilter;
@@ -16,7 +16,7 @@ import java.util.List;
 public class FilterPipelineFactory {
 
     public FilterPipeline newInstance(GraphRequestDto requestDto) {
-        List<BeansGraphFilter> filters = new ArrayList<>();
+        List<BeanGraphFilter> filters = new ArrayList<>();
 
         if (requestDto == null || requestDto.getFilters().isEmpty()) {
             return new FilterPipeline(filters);
