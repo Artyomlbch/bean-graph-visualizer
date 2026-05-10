@@ -1,9 +1,9 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanNode;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.BeanGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanNode;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphType;
 
 import java.util.List;
 import java.util.Set;
@@ -22,16 +22,18 @@ public class TypeGraphFilter implements BeanGraphFilter {
         BeanGraph filteredGraph = new BeanGraph();
         boolean filterSystem = graphType == GraphType.SYSTEM;
 
-        List<BeanNode> filteredNodes = originalGraph.getNodes().stream()
+        originalGraph.getNodes().stream()
                 .filter(node -> node.isSystem() == filterSystem)
-                .toList();
+                .forEach(filteredGraph::addNode);
 
-        filteredNodes.forEach(filteredGraph::addNode);
+        originalGraph.getSoloNodes().stream()
+                .filter(node -> node.isSystem() == filterSystem)
+                .forEach(filteredGraph::addSoloNode);
 
-        Set<String> allowedIds = filteredNodes.stream().map(BeanNode::getId).collect(Collectors.toSet());
+        Set<String> allowedIds = filteredGraph.getNodes().stream().map(BeanNode::id).collect(Collectors.toSet());
 
         originalGraph.getEdges().stream()
-                .filter(edge -> allowedIds.contains(edge.getSource().getId()))
+                .filter(edge -> allowedIds.contains(edge.source().id()))
                 .forEach(filteredGraph::addEdge);
 
         return filteredGraph;

@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.service;
+package org.artyomlbch.beangraphvisualizer.visualizer.service;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

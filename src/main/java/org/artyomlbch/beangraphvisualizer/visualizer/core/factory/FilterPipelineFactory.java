@@ -1,14 +1,14 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.factory;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.factory;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.ElementsGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.PackageGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl.TypeGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.pipeline.FilterPipeline;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphElementType;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphType;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.filter.FilterDto;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.filter.GraphRequestDto;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.BeanGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.ElementsGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.PackageGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.TypeGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.pipeline.FilterPipeline;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphElementType;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphType;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.FilterDto;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
 
 import java.util.ArrayList;
 import java.util.List;

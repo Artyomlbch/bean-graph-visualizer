@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.serializer;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.serializer;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 
 public interface GraphSerializer {
     String serialize(BeanGraph graph);

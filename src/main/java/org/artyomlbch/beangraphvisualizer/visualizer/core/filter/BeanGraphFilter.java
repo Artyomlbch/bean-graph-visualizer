@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.filter;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.filter;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 
 public interface BeanGraphFilter {
     BeanGraph apply(BeanGraph originalGraph);

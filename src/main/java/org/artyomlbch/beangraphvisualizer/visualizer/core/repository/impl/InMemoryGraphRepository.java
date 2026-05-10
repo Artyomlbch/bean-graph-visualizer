@@ -1,12 +1,11 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.repository.impl;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.repository.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.repository.BeanGraphRepository;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.storage.InMemoryBeanGraphStorage;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.repository.GraphRepository;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryBeanGraphRepository implements BeanGraphRepository {
+public class InMemoryGraphRepository implements GraphRepository {
 
     private volatile BeanGraph cachedGraph;
 

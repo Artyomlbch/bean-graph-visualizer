@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.storage;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.storage;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Component;
 
 @Component

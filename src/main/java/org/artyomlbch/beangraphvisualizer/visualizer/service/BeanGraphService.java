@@ -1,24 +1,23 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.service;
+package org.artyomlbch.beangraphvisualizer.visualizer.service;
 
-import lombok.RequiredArgsConstructor;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.factory.FilterPipelineFactory;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.pipeline.FilterPipeline;
-import org.artyomlbch.beangrapvisualizer.visualizer.core.repository.BeanGraphRepository;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.filter.GraphRequestDto;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.factory.FilterPipelineFactory;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.pipeline.FilterPipeline;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.repository.GraphRepository;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BeanGraphService {
 
-    private final BeanGraphRepository beanGraphRepository;
+    private final GraphRepository graphRepository;
 
-    public BeanGraphService(BeanGraphRepository beanGraphRepository) {
-        this.beanGraphRepository = beanGraphRepository;
+    public BeanGraphService(GraphRepository graphRepository) {
+        this.graphRepository = graphRepository;
     }
 
     public BeanGraph getGraph(GraphRequestDto request) {
         FilterPipeline filterPipeline = new FilterPipelineFactory().newInstance(request);
-        return filterPipeline.process(beanGraphRepository.getGraph());
+        return filterPipeline.process(graphRepository.getGraph());
     }
 }

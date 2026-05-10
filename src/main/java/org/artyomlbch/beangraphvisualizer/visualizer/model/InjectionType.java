@@ -1,4 +1,4 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.model;
+package org.artyomlbch.beangraphvisualizer.visualizer.model;
 
 public enum InjectionType {
     CONSTRUCTOR,

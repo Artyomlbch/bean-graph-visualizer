@@ -1,6 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.repository.impl;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.repository.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.repository.BeanMetadataRepository;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.repository.BeanMetadataRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ConfigurableListableBeanFactoryBeanMetadataRepository implements BeanMetadataRepository, ApplicationContextAware {
+public class BeanFactoryMetadataRepository implements BeanMetadataRepository, ApplicationContextAware {
 
     private ConfigurableListableBeanFactory factory;
 

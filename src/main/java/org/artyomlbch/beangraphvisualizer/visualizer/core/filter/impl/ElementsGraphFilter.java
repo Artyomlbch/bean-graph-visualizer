@@ -1,8 +1,8 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.impl;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.GraphElementType;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.BeanGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphElementType;
 
 public class ElementsGraphFilter implements BeanGraphFilter {
 
@@ -18,6 +18,7 @@ public class ElementsGraphFilter implements BeanGraphFilter {
 
         if (elementType == GraphElementType.NODES_ONLY) {
             originalGraph.getNodes().forEach(filteredGraph::addNode);
+            originalGraph.getSoloNodes().forEach(filteredGraph::addSoloNode);
 
         } else if (elementType == GraphElementType.EDGES_ONLY) {
             originalGraph.getEdges().forEach(filteredGraph::addEdge);

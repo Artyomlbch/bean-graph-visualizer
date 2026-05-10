@@ -1,7 +1,7 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.serializer.impl;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.serializer.GraphSerializer;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 

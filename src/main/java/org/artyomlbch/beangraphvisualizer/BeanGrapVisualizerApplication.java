@@ -1,4 +1,4 @@
-package org.artyomlbch.beangrapvisualizer;
+package org.artyomlbch.beangraphvisualizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

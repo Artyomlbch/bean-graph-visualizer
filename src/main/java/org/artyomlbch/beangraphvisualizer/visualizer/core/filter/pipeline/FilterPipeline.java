@@ -1,7 +1,7 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.filter.pipeline;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.filter.pipeline;
 
-import org.artyomlbch.beangrapvisualizer.visualizer.core.filter.BeanGraphFilter;
-import org.artyomlbch.beangrapvisualizer.visualizer.model.BeanGraph;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.BeanGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 
 import java.util.List;
 

@@ -1,9 +1,6 @@
-package org.artyomlbch.beangrapvisualizer.visualizer.core.repository;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.repository;
 
-import org.springframework.beans.BeanMetadataElement;
 import org.springframework.beans.factory.config.BeanDefinition;
-
-import java.util.List;
 
 public interface BeanMetadataRepository {
     String[] getBeanDefinitionNames();

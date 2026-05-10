@@ -8,7 +8,7 @@ plugins {
 
 group = "org.artyomlbch"
 version = "0.0.1-SNAPSHOT"
-description = "beanGrapVisualizer"
+description = "beanGraphVisualizer"
 
 java {
     toolchain {

@@ -1,1 +1,1 @@
-rootProject.name = "beanGrapVisualizer"
+rootProject.name = "beanGraphVisualizer"
