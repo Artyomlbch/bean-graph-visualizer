@@ -8,11 +8,11 @@ import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDt
 import org.springframework.stereotype.Service;
 
 @Service
-public class BeanGraphService {
+public class GraphService {
 
     private final GraphRepository graphRepository;
 
-    public BeanGraphService(GraphRepository graphRepository) {
+    public GraphService(GraphRepository graphRepository) {
         this.graphRepository = graphRepository;
     }
 

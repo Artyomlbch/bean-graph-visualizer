@@ -2,16 +2,14 @@ package org.artyomlbch.beangraphvisualizer.visualizer.core.factory;
 
 import org.artyomlbch.beangraphvisualizer.visualizer.core.repository.BeanMetadataRepository;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.*;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.Stereotype;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,13 +42,16 @@ public class GraphFactory {
                 graph.addSoloNode(currentNode);
             } else {
                 graph.addNode(currentNode);
+
+                Class<?> beanClass = beanRepository.getBeanClass(beanName);
                 for (String depName : dependencies) {
                     if (beanName.equals(depName)) continue;
 
                     BeanNode depNode = nodeCache.get(depName);
                     if (depNode == null) continue;
 
-                    InjectionType type = determineInjectionType(beanName, depName, beanRepository);
+                    Class<?> depClass = beanRepository.getBeanClass(depName);
+                    InjectionType type = determineInjectionType(beanClass, depClass, beanRepository);
                     graph.addEdge(new BeanEdge(currentNode, depNode, type));
                 }
             }
@@ -67,8 +68,22 @@ public class GraphFactory {
 
         String className = (beanClass != null) ? beanClass.getName() : "Unknown";
         BeanScope scope = BeanScope.UNKNOWN;
+        Stereotype stereotype = Stereotype.UNKNOWN;
         int role = BeanDefinition.ROLE_APPLICATION;
 
+        if (beanClass != null) {
+            if (beanClass.isAnnotationPresent(org.springframework.web.bind.annotation.RestController.class) ||
+                    beanClass.isAnnotationPresent(org.springframework.stereotype.Controller.class)) {
+                stereotype = Stereotype.CONTROLLER;
+            } else if (beanClass.isAnnotationPresent(org.springframework.stereotype.Service.class)) {
+                stereotype = Stereotype.SERVICE;
+            } else if (beanClass.isAnnotationPresent(org.springframework.stereotype.Repository.class)) {
+                stereotype = Stereotype.REPOSITORY;
+            } else if (beanClass.isAnnotationPresent(org.springframework.context.annotation.Configuration.class)) {
+                stereotype = Stereotype.CONFIGURATION;
+            }
+        }
+        
         try {
             BeanDefinition bd = beanRepository.getBeanDefinition(beanName);
             role = bd.getRole();
@@ -80,7 +95,7 @@ public class GraphFactory {
         }
 
         boolean isSystem = isSystemBean(className, role);
-        return new BeanNode(beanName, className, scope, isSystem);
+        return new BeanNode(beanName, className, scope, isSystem, stereotype);
     }
 
     private boolean isSystemBean(String className, int role) {
@@ -92,14 +107,20 @@ public class GraphFactory {
         return !isUserBean;
     }
 
-    private InjectionType determineInjectionType(String beanName, String depName, BeanMetadataRepository beanRepository) {
+    private InjectionType determineInjectionType(Class<?> beanClass, Class<?> depClass, BeanMetadataRepository beanRepository) {
         try {
-            Class<?> beanClass = beanRepository.getBeanClass(beanName);
-            Class<?> depClass = beanRepository.getBeanClass(depName);
             if (beanClass == null || depClass == null) return InjectionType.UNKNOWN;
 
             for (Constructor<?> constructor : beanClass.getConstructors()) {
                 if (isMatch(constructor.getGenericParameterTypes(), depClass)) return InjectionType.CONSTRUCTOR;
+            }
+
+            for (Method method : beanClass.getDeclaredMethods()) {
+                if (method.getName().startsWith("set") && method.getParameterCount() == 1) {
+                    if (isMatch(method.getGenericParameterTypes(), depClass)) {
+                        return InjectionType.SETTER;
+                    }
+                }
             }
 
             for (Field field : beanClass.getDeclaredFields()) {

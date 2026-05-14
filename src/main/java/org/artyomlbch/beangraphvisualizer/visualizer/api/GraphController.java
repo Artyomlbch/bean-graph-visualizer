@@ -1,9 +1,9 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.api;
 
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
-import org.artyomlbch.beangraphvisualizer.visualizer.service.BeanGraphService;
+import org.artyomlbch.beangraphvisualizer.visualizer.service.GraphService;
 import org.artyomlbch.beangraphvisualizer.visualizer.service.SerializerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class GraphController {
 
     private final SerializerService serializerService;
-    private final BeanGraphService beanGraphService;
+    private final GraphService graphService;
 
-    public GraphController(SerializerService serializerService, BeanGraphService beanGraphService) {
+    public GraphController(SerializerService serializerService, GraphService graphService) {
         this.serializerService = serializerService;
-        this.beanGraphService = beanGraphService;
+        this.graphService = graphService;
     }
 
     @GetMapping(value = "/api/ioc-visualizer/graph")
@@ -24,9 +24,9 @@ public class GraphController {
             @RequestParam(defaultValue = "json") String format,
             @RequestBody(required = false) GraphRequestDto requestDto
     ) {
-        BeanGraph graph = beanGraphService.getGraph(requestDto);
+        BeanGraph graph = graphService.getGraph(requestDto);
 
-        GraphSerializer serializer = serializerService.getGraphSerializer(format);
+        Serializer serializer = serializerService.getGraphSerializer(format);
 
         return serializer.serialize(graph);
     }

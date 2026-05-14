@@ -1,14 +1,9 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.core.factory;
 
-import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.BeanGraphFilter;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.ElementsGraphFilter;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.PackageGraphFilter;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.TypeGraphFilter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.Filter;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl.*;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.pipeline.FilterPipeline;
-import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphElementType;
-import org.artyomlbch.beangraphvisualizer.visualizer.model.GraphType;
-import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.FilterDto;
-import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +11,7 @@ import java.util.List;
 public class FilterPipelineFactory {
 
     public FilterPipeline newInstance(GraphRequestDto requestDto) {
-        List<BeanGraphFilter> filters = new ArrayList<>();
+        List<Filter> filters = new ArrayList<>();
 
         if (requestDto == null || requestDto.getFilters().isEmpty()) {
             return new FilterPipeline(filters);
@@ -29,7 +24,9 @@ public class FilterPipelineFactory {
                 switch (dto.type()) {
                     case PACKAGE -> filters.add(new PackageGraphFilter(dto.value()));
                     case TYPE -> filters.add(new TypeGraphFilter(GraphType.valueOf(dto.value())));
-                    case ELEMENTS -> filters.add(new ElementsGraphFilter(GraphElementType.valueOf(dto.value())));
+                    case DETAIL_LEVEL -> filters.add(new DetailLevelGraphFilter(DetailLevel.valueOf(dto.value())));
+                    case SCOPE -> filters.add(new BeanScopeGraphFilter(ScopeType.valueOf(dto.value())));
+                    case STEREOTYPE -> filters.add(new BeanStereotypeGraphFilter(Stereotype.valueOf(dto.value())));
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(

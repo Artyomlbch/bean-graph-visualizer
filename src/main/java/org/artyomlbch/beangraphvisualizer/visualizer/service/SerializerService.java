@@ -1,23 +1,35 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.service;
 
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl.JsonSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl.XmlSerializer;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SerializerService {
 
-    private final List<GraphSerializer> serializers;
 
-    public SerializerService(List<GraphSerializer> serializers) {
-        this.serializers = serializers;
+    private final Map<String, Serializer> serializers = new HashMap<>();
+
+    public SerializerService(List<Serializer> serializerList) {
+        for (Serializer serializer : serializerList) {
+            String className = serializer.getClass().getSimpleName();
+
+            String formatKey = className.toLowerCase().replace("serializer", "");
+
+            this.serializers.put(formatKey, serializer);
+        }
     }
 
-    public GraphSerializer getGraphSerializer(String format) {
-        return serializers.stream()
-                .filter(s -> s.getFormat().equalsIgnoreCase(format))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported format: " + format));
+    public Serializer getGraphSerializer(String format) {
+        Serializer serializer = serializers.get(format.toLowerCase());
+        if (serializer == null) {
+            throw new IllegalArgumentException("Unsupported format: " + format);
+        }
+        return serializer;
     }
 }

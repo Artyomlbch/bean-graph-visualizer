@@ -3,33 +3,36 @@ package org.artyomlbch.beangraphvisualizer.visualizer.core.filter.impl;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.filter.Filter;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanNode;
-import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphType;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.Stereotype;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TypeGraphFilter implements Filter {
+public class BeanStereotypeGraphFilter implements Filter {
 
-    private final GraphType graphType;
+    private final Stereotype stereotype;
 
-    public TypeGraphFilter(GraphType graphType) {
-        this.graphType = graphType;
+    public BeanStereotypeGraphFilter(Stereotype stereotype) {
+        this.stereotype = stereotype;
     }
 
     @Override
     public BeanGraph apply(BeanGraph originalGraph) {
         BeanGraph filteredGraph = new BeanGraph();
-        boolean filterSystem = graphType == GraphType.SYSTEM;
 
-        originalGraph.getNodes().stream()
-                .filter(node -> node.isSystem() == filterSystem)
-                .forEach(filteredGraph::addNode);
+        List<BeanNode> filteredNodes = originalGraph.getNodes().stream()
+                .filter(node -> node.stereotype() == this.stereotype)
+                .toList();
+        filteredNodes.forEach(filteredGraph::addNode);
 
         originalGraph.getSoloNodes().stream()
-                .filter(node -> node.isSystem() == filterSystem)
+                .filter(node -> node.stereotype() == this.stereotype)
                 .forEach(filteredGraph::addSoloNode);
 
-        Set<String> allowedIds = filteredGraph.getNodes().stream().map(BeanNode::id).collect(Collectors.toSet());
+        Set<String> allowedIds = filteredNodes.stream()
+                .map(BeanNode::id)
+                .collect(Collectors.toSet());
 
         originalGraph.getEdges().stream()
                 .filter(edge -> allowedIds.contains(edge.source().id()))

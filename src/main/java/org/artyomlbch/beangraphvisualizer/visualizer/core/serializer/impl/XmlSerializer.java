@@ -1,16 +1,16 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Component;
 
 @Component
-public class XmlGraphSerializer implements GraphSerializer {
+public class XmlSerializer implements Serializer {
 
     private final XmlMapper xmlMapper;
 
-    public XmlGraphSerializer() {
+    public XmlSerializer() {
         this.xmlMapper = new XmlMapper();
     }
 
@@ -21,11 +21,6 @@ public class XmlGraphSerializer implements GraphSerializer {
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize graph to XML", e);
         }
-    }
-
-    @Override
-    public String getFormat() {
-        return "xml";
     }
 }
 

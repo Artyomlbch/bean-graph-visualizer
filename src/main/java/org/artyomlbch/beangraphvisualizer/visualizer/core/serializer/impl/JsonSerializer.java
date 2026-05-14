@@ -1,16 +1,16 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl;
 
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.GraphSerializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 @Component
-public class JsonGraphSerializer implements GraphSerializer {
+public class JsonSerializer implements Serializer {
 
     private final ObjectMapper objectMapper;
 
-    public JsonGraphSerializer(ObjectMapper objectMapper) {
+    public JsonSerializer(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -21,10 +21,5 @@ public class JsonGraphSerializer implements GraphSerializer {
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize graph to JSON", e);
         }
-    }
-
-    @Override
-    public String getFormat() {
-        return "json";
     }
 }
