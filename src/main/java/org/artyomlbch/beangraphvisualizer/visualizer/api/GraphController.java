@@ -1,11 +1,14 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.api;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
 import org.artyomlbch.beangraphvisualizer.visualizer.service.GraphService;
 import org.artyomlbch.beangraphvisualizer.visualizer.service.SerializerService;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -19,7 +22,7 @@ public class GraphController {
         this.graphService = graphService;
     }
 
-    @GetMapping(value = "/api/ioc-visualizer/graph")
+    @PostMapping(value = "/api/ioc-visualizer/graph")
     public String getGraph(
             @RequestParam(defaultValue = "json") String format,
             @RequestBody(required = false) GraphRequestDto requestDto

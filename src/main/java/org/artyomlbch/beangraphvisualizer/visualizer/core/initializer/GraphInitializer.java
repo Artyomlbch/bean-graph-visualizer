@@ -1,6 +1,5 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.core.initializer;
 
-import lombok.RequiredArgsConstructor;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.factory.GraphFactory;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.repository.GraphRepository;
 import org.springframework.context.ApplicationListener;

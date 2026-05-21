@@ -63,7 +63,7 @@ public class GraphFactory {
         Class<?> beanClass = null;
         try {
             beanClass = beanRepository.getBeanClass(beanName);
-        } catch (Exception _) {
+        } catch (Exception ignored) {
         }
 
         String className = (beanClass != null) ? beanClass.getName() : "Unknown";
@@ -83,7 +83,7 @@ public class GraphFactory {
                 stereotype = Stereotype.CONFIGURATION;
             }
         }
-        
+
         try {
             BeanDefinition bd = beanRepository.getBeanDefinition(beanName);
             role = bd.getRole();
@@ -111,7 +111,7 @@ public class GraphFactory {
         try {
             if (beanClass == null || depClass == null) return InjectionType.UNKNOWN;
 
-            for (Constructor<?> constructor : beanClass.getConstructors()) {
+            for (Constructor<?> constructor : beanClass.getDeclaredConstructors()) {
                 if (isMatch(constructor.getGenericParameterTypes(), depClass)) return InjectionType.CONSTRUCTOR;
             }
 
@@ -126,7 +126,7 @@ public class GraphFactory {
             for (Field field : beanClass.getDeclaredFields()) {
                 if (isMatch(new Type[]{field.getGenericType()}, depClass)) return InjectionType.FIELD;
             }
-        } catch (Exception _) {}
+        } catch (Exception ignored) {}
         return InjectionType.UNKNOWN;
     }
 
