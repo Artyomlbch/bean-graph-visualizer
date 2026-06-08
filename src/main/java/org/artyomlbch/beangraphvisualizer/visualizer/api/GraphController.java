@@ -1,24 +1,21 @@
 package org.artyomlbch.beangraphvisualizer.visualizer.api;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.artyomlbch.beangraphvisualizer.visualizer.model.filter.GraphRequestDto;
 import org.artyomlbch.beangraphvisualizer.visualizer.service.GraphService;
-import org.artyomlbch.beangraphvisualizer.visualizer.service.SerializerService;
+import org.artyomlbch.beangraphvisualizer.visualizer.core.factory.SerializerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @CrossOrigin
 public class GraphController {
 
-    private final SerializerService serializerService;
+    private final SerializerFactory serializerFactory;
     private final GraphService graphService;
 
-    public GraphController(SerializerService serializerService, GraphService graphService) {
-        this.serializerService = serializerService;
+    public GraphController(SerializerFactory serializerFactory, GraphService graphService) {
+        this.serializerFactory = serializerFactory;
         this.graphService = graphService;
     }
 
@@ -29,7 +26,7 @@ public class GraphController {
     ) {
         BeanGraph graph = graphService.getGraph(requestDto);
 
-        Serializer serializer = serializerService.getGraphSerializer(format);
+        Serializer serializer = serializerFactory.getGraphSerializer(format);
 
         return serializer.serialize(graph);
     }

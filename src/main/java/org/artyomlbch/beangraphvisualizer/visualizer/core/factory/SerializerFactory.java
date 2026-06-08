@@ -1,8 +1,6 @@
-package org.artyomlbch.beangraphvisualizer.visualizer.service;
+package org.artyomlbch.beangraphvisualizer.visualizer.core.factory;
 
 import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl.JsonSerializer;
-import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.impl.XmlSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -10,12 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SerializerService {
-
+public class SerializerFactory {
 
     private final Map<String, Serializer> serializers = new HashMap<>();
 
-    public SerializerService(List<Serializer> serializerList) {
+    public SerializerFactory(List<Serializer> serializerList) {
         for (Serializer serializer : serializerList) {
             String className = serializer.getClass().getSimpleName();
 

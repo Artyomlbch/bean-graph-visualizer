@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = "org.artyomlbch.beangraphvisualizer.visualizer")
-public class IocVisualizerAutoConfiguration {
+public class VisualizerScanConfiguration {
 }
