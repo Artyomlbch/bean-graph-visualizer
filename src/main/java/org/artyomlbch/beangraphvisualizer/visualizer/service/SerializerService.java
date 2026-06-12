@@ -1,6 +1,7 @@
-package org.artyomlbch.beangraphvisualizer.visualizer.core.factory;
+package org.artyomlbch.beangraphvisualizer.visualizer.service;
 
 import org.artyomlbch.beangraphvisualizer.visualizer.core.serializer.Serializer;
+import org.artyomlbch.beangraphvisualizer.visualizer.model.BeanGraph;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -8,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SerializerFactory {
+public class SerializerService {
 
     private final Map<String, Serializer> serializers = new HashMap<>();
 
-    public SerializerFactory(List<Serializer> serializerList) {
+    public SerializerService(List<Serializer> serializerList) {
         for (Serializer serializer : serializerList) {
             String className = serializer.getClass().getSimpleName();
 
@@ -22,11 +23,11 @@ public class SerializerFactory {
         }
     }
 
-    public Serializer getGraphSerializer(String format) {
+    public String serialize(BeanGraph beanGraph, String format) {
         Serializer serializer = serializers.get(format.toLowerCase());
         if (serializer == null) {
             throw new IllegalArgumentException("Unsupported format: " + format);
         }
-        return serializer;
+        return serializer.serialize(beanGraph);
     }
 }
